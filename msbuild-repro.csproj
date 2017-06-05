@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk" DefaultBuildTargets="Test">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.0</TargetFramework>
+    <RestoreGraphProjectInput Condition="'$(PreflightRestore)' == 'true'">$(MSBuildProjectFullPath);$(MSBuildThisFileDirectory)sharedsources.csproj</RestoreGraphProjectInput>
+  </PropertyGroup>
+  
+  <ItemGroup>
+    <PackageReference Include="SplitPackages" Version="1.0.2-*" />
+    <PackageReference Include="Internal.AspNetCore.BuildTools.Tasks" Version="1.0.0-*" />
+  </ItemGroup>
+  
+  <Target Name="Test" DependsOnTargets="RunResolvePackageDependencies">
+     <ItemGroup>
+      <SplitPackagePath Include="%(PackageDefinitions.ResolvedPath)" Condition="'%(PackageDefinitions.Name)'=='SplitPackages'" />
+    </ItemGroup>
+    
+    <Message Text="@(SplitPackagePath)" Importance="High" />
+  </Target>
+
+</Project>
